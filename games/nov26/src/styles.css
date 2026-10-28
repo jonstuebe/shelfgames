@@ -124,23 +124,11 @@ body {
 .wave-mid .wave-body { fill: color-mix(in srgb, var(--sea-mid) calc(40% + var(--p) * 60%), var(--rain-top)); }
 .wave-front .wave-body { fill: color-mix(in srgb, var(--sea-front) calc(40% + var(--p) * 60%), var(--rain-top)); }
 .wave-front .wave-crest { opacity: 0.45; stroke-width: 3px; }
-.glints { position: absolute; inset: 0; opacity: var(--p); transition: opacity 1.4s ease; }
-.glint {
-  position: absolute; width: 14px; height: 3px; border-radius: 99px;
-  background: color-mix(in srgb, var(--sun) 40%, #fff);
-  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--sun) 60%, transparent);
-  opacity: 0; animation: glint ease-in-out infinite;
-}
-@keyframes glint {
-  0%, 100% { opacity: 0; transform: scaleX(0.3); }
-  50% { opacity: 0.9; transform: scaleX(1); }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .drop, .wave-roll, .wave-bob { animation: none; }
-  .glint { animation: none; opacity: 0.6; }
   .rain { display: none; }
-  .gloom, .sun, .wave-layer, .wave-body, .glints, .card { transition: none !important; }
+  .gloom, .sun, .wave-layer, .wave-body, .card { transition: none !important; }
 }
 
 /* ---------- Card ---------- */

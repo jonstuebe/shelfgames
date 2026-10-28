@@ -28,10 +28,9 @@ describe("sea layers", () => {
 });
 
 describe("buildSea", () => {
-  it("renders every layer plus the sun glints", () => {
+  it("renders every layer", () => {
     const container = { innerHTML: "" };
     buildSea(container, () => 0.5);
     expect(container.innerHTML.match(/class="wave-layer /g)).toHaveLength(LAYERS.length);
-    expect(container.innerHTML.match(/class="glint"/g)).toHaveLength(16);
   });
 });

@@ -41,16 +41,5 @@ export function buildSea(container, random = Math.random) {
       </div>
     </div>`).join("");
 
-  // Sun glints on the water, shown once the sky clears.
-  const glints = Array.from({ length: 16 }, () => {
-    const style = [
-      `left:${(random() * 96 + 2).toFixed(1)}%`,
-      `bottom:${(random() * 26 + 4).toFixed(1)}%`,
-      `animation-duration:${(2.4 + random() * 2.4).toFixed(2)}s`,
-      `animation-delay:${(-random() * 4).toFixed(2)}s`,
-    ].join(";");
-    return `<span class="glint" style="${style}"></span>`;
-  }).join("");
-
-  container.innerHTML = layers + `<div class="glints">${glints}</div>`;
+  container.innerHTML = layers;
 }
