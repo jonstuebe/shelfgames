@@ -1,0 +1,11 @@
+{
+  "name": "shelfgames",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "games/*"
+  ],
+  "scripts": {
+    "build": "bun --filter './games/*' build"
+  }
+}

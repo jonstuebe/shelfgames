@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 2,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "shelfgames",
+    },
+    "games/nov26": {
+      "name": "@shelfgames/nov26",
+    },
+  },
+  "packages": {
+    "@shelfgames/nov26": ["@shelfgames/nov26@workspace:games/nov26"],
+  }
+}

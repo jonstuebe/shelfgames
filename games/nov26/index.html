@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Which Marsyas Island Resident Are You?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+
+<div class="scene" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="gloom"></div>
+  <div class="sun"></div>
+  <div class="rain" id="rain"></div>
+  <svg class="sea" viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <g class="sway slow"><path class="wave-back" d="M-100 120 C 100 80, 250 160, 450 115 S 800 70, 1000 120 S 1250 150, 1300 110 L1300 300 L-100 300 Z"/></g>
+    <g class="sway"><path class="wave-mid" d="M-100 175 C 120 140, 300 210, 520 170 S 880 130, 1080 180 S 1260 190, 1300 165 L1300 300 L-100 300 Z"/></g>
+    <path class="wave-front" d="M-100 235 C 150 210, 330 265, 560 232 S 920 200, 1300 238 L1300 300 L-100 300 Z"/>
+  </svg>
+</div>
+
+<main>
+  <section class="card enter" id="card" aria-live="polite"></section>
+</main>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
