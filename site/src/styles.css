@@ -82,55 +82,130 @@ h1 {
 }
 .lede { margin: 0 auto; max-width: 32rem; color: var(--muted); font-size: 1.1rem; }
 
-/* ---------- Card catalog filters ---------- */
-.catalog {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
-  max-width: 34rem; margin: 0 auto;
-  padding: 12px;
-  background: linear-gradient(180deg, var(--frame-light), var(--frame-dark));
-  border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 22px -10px rgba(30, 15, 5, 0.7);
+/* ---------- Filters: books lying on a ledge ---------- */
+.ledge {
+  position: relative;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end;
+  column-gap: 14px;
+  max-width: 36rem; margin: 0 auto;
+  padding: 0 18px 16px;
 }
-.drawer {
-  flex: 1 1 13rem;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 10px 12px 12px;
+/* The ledge itself */
+.ledge::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 16px;
   background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 3px, transparent 3px 11px, rgba(0, 0, 0, 0.05) 11px 13px, transparent 13px 24px),
-    linear-gradient(180deg, #A9714A, #87552F);
-  border-radius: 5px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.25), 0 2px 3px rgba(0, 0, 0, 0.35);
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 13px, rgba(0, 0, 0, 0.06) 13px 15px, transparent 15px 31px),
+    linear-gradient(180deg, var(--plank-top) 0 3px, var(--plank) 3px, var(--plank-low) 12px, var(--plank-edge) 12px);
+  border-radius: 2px;
+  box-shadow: 0 10px 14px -8px rgba(30, 15, 5, 0.7);
+}
+/* On narrow screens the books stack into a little pile */
+.book-select { position: relative; flex: 1 1 15rem; max-width: 17rem; z-index: 2; }
+.book-select:nth-child(2) { margin-left: 10px; }
+.book-select.open { z-index: 10; }
+@media (max-width: 560px) {
+  .ledge { flex-direction: column-reverse; align-items: center; }
+  .book-select { flex: none; width: min(100%, 17rem); }
+  .book-select:nth-child(1) { width: min(calc(100% - 10px), 16.2rem); }
+  .book-select:nth-child(2) { margin-left: 0; }
+}
+
+/* A cloth-bound book lying on its side, spine out */
+.spine {
+  --cloth: #7A2E2E;
+  --foil: #E8C877;
+  position: relative; display: flex; align-items: center;
+  width: 100%; height: 56px;
+  padding: 0 44px 0 104px;
+  font: inherit; text-align: left; color: var(--foil);
+  border: 0; border-radius: 5px / 12px;
+  background:
+    /* Gold bands near each end */
+    linear-gradient(90deg, var(--foil) 0 2px, transparent 2px 5px, var(--foil) 5px 6px) left 12px top 0 / 6px 100% no-repeat,
+    linear-gradient(90deg, var(--foil) 0 1px, transparent 1px 4px, var(--foil) 4px 6px) right 12px top 0 / 6px 100% no-repeat,
+    /* Rounded spine shading */
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0, rgba(255, 255, 255, 0.06) 22%, transparent 45%, rgba(0, 0, 0, 0.3) 100%),
+    /* Cloth weave */
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
+    var(--cloth);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25), 0 3px 4px -1px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.book-select:nth-child(2) .spine { --cloth: #2F4B6E; }
+.spine:hover { transform: translateY(-2px); }
+.spine:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.spine-value {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font: italic 400 1.15rem/1 "Fraunces", Georgia, serif;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45), 0 0 6px rgba(232, 200, 119, 0.25);
+}
+.spine-caret {
+  position: absolute; right: 26px; top: 50%;
+  width: 8px; height: 8px; margin-top: -6px;
+  border-right: 2px solid var(--foil, #E8C877); border-bottom: 2px solid var(--foil, #E8C877);
+  transform: rotate(45deg); transition: transform 0.2s ease, margin-top 0.2s ease;
+}
+.open .spine-caret { transform: rotate(-135deg); margin-top: -2px; }
+/* Leather title label on the spine */
+.spine-label {
+  position: absolute; left: 26px; top: 50%; z-index: 1;
+  transform: translateY(-50%);
+  width: 66px; padding: 5px 0;
+  text-align: center;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #E8C877;
+  background: linear-gradient(180deg, #3A2516, #24160C);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(232, 200, 119, 0.6), inset 0 0 0 3px #2E1D11, inset 0 0 0 4px rgba(232, 200, 119, 0.35);
+  pointer-events: none;
+}
+
+/* The page that unfolds: a table of contents */
+.page {
+  position: absolute; top: calc(100% + 10px); left: 6px; right: 6px;
+  min-width: 13rem;
+  padding: 0.9rem 1rem 0.75rem;
+  color: #2B1D14;
+  background:
+    linear-gradient(90deg, rgba(120, 90, 50, 0.12), transparent 8%, transparent 92%, rgba(120, 90, 50, 0.1)),
+    #FBF6EA;
+  border-radius: 2px 2px 4px 4px;
+  box-shadow: 0 1px 0 #E6DCC6, 0 2px 0 #FBF6EA, 0 3px 0 #DDD1B8, 0 18px 30px -10px rgba(30, 15, 5, 0.6);
+  transform-origin: 50% 0;
+  animation: unfold 0.22s ease-out;
+}
+@keyframes unfold { from { opacity: 0; transform: perspective(600px) rotateX(-55deg); } }
+.page-heading {
+  margin: 0 0 0.5rem; text-align: center;
+  font: italic 400 0.95rem "Fraunces", Georgia, serif; color: #8C3B2A; letter-spacing: 0.04em;
+}
+.page-heading::before, .page-heading::after { content: "❧"; font-style: normal; margin: 0 0.5em; opacity: 0.7; }
+.page-heading::before { display: inline-block; transform: scaleX(-1); }
+.contents { list-style: none; margin: 0; padding: 0; max-height: 16rem; overflow-y: auto; outline: none; }
+.entry {
+  position: relative;
+  display: flex; align-items: baseline; gap: 0.4rem;
+  padding: 0.38rem 0.5rem 0.38rem 1.4rem;
+  font: 400 1.02rem/1.3 "Fraunces", Georgia, serif;
+  border-radius: 2px;
   cursor: pointer;
 }
-.drawer-label {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-  color: #F6E7CF; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+.entry.active { background: rgba(140, 59, 42, 0.1); }
+.entry.none { color: #9A8A78; }
+.leader { flex: 1; border-bottom: 2px dotted rgba(107, 86, 70, 0.55); transform: translateY(-0.25em); }
+.entry-count { font-variant-numeric: oldstyle-nums; color: #6B5646; }
+/* A ribbon bookmark marks the current choice */
+.entry[aria-selected="true"]::before {
+  content: ""; position: absolute; left: 0.2rem; top: -0.1rem; bottom: 0.25rem; width: 0.7rem;
+  background: linear-gradient(90deg, #8C2A20, #B23A2C 60%, #8C2A20);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
 }
-/* A paper card held in a brass frame */
-.card {
-  position: relative; width: 100%;
-  padding: 3px;
-  background: linear-gradient(180deg, var(--brass-light), var(--brass) 45%, var(--brass-dark));
-  border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-.card select {
-  appearance: none; -webkit-appearance: none;
-  width: 100%; padding: 0.45rem 2rem 0.45rem 0.75rem;
-  font: italic 400 1.05rem/1.3 "Fraunces", Georgia, serif; color: #2B1D14;
-  background:
-    linear-gradient(45deg, transparent 50%, #6B5646 50%) right 0.95rem center / 6px 6px no-repeat,
-    linear-gradient(-45deg, transparent 50%, #6B5646 50%) right 0.6rem center / 6px 6px no-repeat,
-    linear-gradient(0deg, transparent 5px, var(--paper-line) 5px 6px, transparent 6px),
-    var(--paper);
-  border: 0; border-radius: 2px;
-  cursor: pointer;
-}
-.card select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-.pull {
-  width: 44px; height: 9px; border-radius: 0 0 10px 10px;
-  background: linear-gradient(180deg, var(--brass-light), var(--brass-dark));
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+.entry[aria-selected="true"] .entry-label { font-weight: 600; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
 }
 .count { margin: 0.9rem 0 1.4rem; text-align: center; color: var(--muted); font-size: 0.95rem; font-weight: 600; }
 
@@ -302,6 +377,7 @@ h1 {
 .footer { margin-top: 2rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
 
 @media (prefers-reduced-motion: reduce) {
-  .book, .cover { transition: none; }
+  .book, .cover, .spine, .spine-caret { transition: none; }
+  .page { animation: none; }
   .book:hover, .book:focus-visible, .book:active { transform: none; }
 }

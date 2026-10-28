@@ -107,3 +107,19 @@ export function clothFor(title) {
   for (const ch of title) h = (h * 31 + ch.codePointAt(0)) >>> 0;
   return CLOTH[h % CLOTH.length];
 }
+
+// Entries for the year and month pickers, each with how many books choosing it would show
+// given the other filter.
+export function filterOptions(books, filters) {
+  const entry = (value, label, f) => ({ value, label, count: filterBooks(books, f).length });
+  return {
+    years: [
+      entry(null, "All years", { ...filters, year: null }),
+      ...yearsOf(books).map(y => entry(y, String(y), { ...filters, year: y })),
+    ],
+    months: [
+      entry(null, "All months", { ...filters, month: null }),
+      ...monthsOf(books).map(m => entry(m, MONTHS[m - 1], { ...filters, month: m })),
+    ],
+  };
+}

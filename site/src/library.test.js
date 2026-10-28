@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  booksFromPackages, clothFor, CLOTH, coverUrl, filterBooks, filtersToSearch, gameUrl,
+  booksFromPackages, clothFor, CLOTH, coverUrl, filterBooks, filterOptions, filtersToSearch, gameUrl,
   monthsOf, parseFilters, shelvesByYear, subdomainFor, validateGame, yearsOf,
 } from "./library.js";
 
@@ -84,6 +84,22 @@ describe("shelving and filtering", () => {
     expect(filterBooks(books, { year: 2027 }).map(b => b.subdomain)).toEqual(["jan27", "feb27", "nov27"]);
     expect(filterBooks(books, { month: 11 }).map(b => b.subdomain)).toEqual(["nov26", "nov27"]);
     expect(filterBooks(books, { year: 2026, month: 1 })).toEqual([]);
+  });
+
+  it("counts how many books each picker entry would show, given the other filter", () => {
+    const { years, months } = filterOptions(books, { year: 2027, month: null });
+    expect(years).toEqual([
+      { value: null, label: "All years", count: 4 },
+      { value: 2027, label: "2027", count: 3 },
+      { value: 2026, label: "2026", count: 1 },
+    ]);
+    expect(months).toEqual([
+      { value: null, label: "All months", count: 3 },
+      { value: 1, label: "January", count: 1 },
+      { value: 2, label: "February", count: 1 },
+      { value: 11, label: "November", count: 1 },
+    ]);
+    expect(filterOptions(books, { year: 2026, month: null }).months.find(m => m.value === 1).count).toBe(0);
   });
 
   it("lists the years and months that have books", () => {

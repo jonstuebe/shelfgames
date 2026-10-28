@@ -1,6 +1,7 @@
+import { createBookSelect } from "./bookselect.js";
 import {
-  booksFromPackages, clothFor, coverUrl, filterBooks, filtersToSearch,
-  MONTHS, monthsOf, parseFilters, shelvesByYear, yearsOf,
+  booksFromPackages, clothFor, coverUrl, filterBooks, filterOptions, filtersToSearch,
+  MONTHS, parseFilters, shelvesByYear,
 } from "./library.js";
 
 // Every game's package.json, read at build time. Adding a game folder adds its book.
@@ -8,18 +9,11 @@ const packages = import.meta.glob("../../games/*/package.json", { eager: true, i
 const books = booksFromPackages(packages);
 
 const library = document.getElementById("library");
-const yearSelect = document.getElementById("year");
-const monthSelect = document.getElementById("month");
 const count = document.getElementById("count");
 let filters = parseFilters(location.search);
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-}
-
-function options(select, all, values, label, current) {
-  select.innerHTML = `<option value="">${all}</option>` +
-    values.map(v => `<option value="${v}"${v === current ? " selected" : ""}>${esc(label(v))}</option>`).join("");
 }
 
 // A cloth-bound stand-in for books without a cover image.
@@ -46,8 +40,9 @@ function bookHtml(book) {
 }
 
 function render() {
-  options(yearSelect, "All years", yearsOf(books), String, filters.year);
-  options(monthSelect, "All months", monthsOf(books), m => MONTHS[m - 1], filters.month);
+  const { years, months } = filterOptions(books, filters);
+  yearSelect.update(years, filters.year);
+  monthSelect.update(months, filters.month);
 
   const shown = filterBooks(books, filters);
   const filtered = filters.year != null || filters.month != null;
@@ -88,8 +83,11 @@ function setFilters(next) {
   render();
 }
 
-const asNumber = v => (v === "" ? null : Number(v));
-yearSelect.onchange = () => setFilters({ ...filters, year: asNumber(yearSelect.value) });
-monthSelect.onchange = () => setFilters({ ...filters, month: asNumber(monthSelect.value) });
+const yearSelect = createBookSelect(document.getElementById("year-select"), {
+  label: "Year", onChange: year => setFilters({ ...filters, year }),
+});
+const monthSelect = createBookSelect(document.getElementById("month-select"), {
+  label: "Month", onChange: month => setFilters({ ...filters, month }),
+});
 
 render();
