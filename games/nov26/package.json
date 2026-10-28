@@ -15,7 +15,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "deploy": "cf deploy"
+    "deploy": "cf deploy",
+    "og": "bun scripts/og.js"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^2.0.0-beta.v.6",
