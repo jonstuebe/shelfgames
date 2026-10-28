@@ -1,0 +1,383 @@
+:root {
+  --wall: #EDE3D1;
+  --wall-stripe: #E5D9C3;
+  --ink: #2B1D14;
+  --muted: #6B5646;
+  --accent: #8C3B2A;
+
+  /* Walnut bookcase */
+  --frame-light: #7A4B2C;
+  --frame-dark: #4A2C19;
+  --back: #3A2416;
+  --back-seam: #2C1A0F;
+  --plank-top: #C18A5A;
+  --plank: #96613A;
+  --plank-low: #7C4E2D;
+  --plank-edge: #4F301B;
+
+  /* Brass and paper */
+  --brass-light: #F1D58C;
+  --brass: #C9A04E;
+  --brass-dark: #8E6B26;
+  --brass-ink: #3D2B0C;
+  --paper: #FBF6EA;
+  --paper-line: #D9CDB4;
+
+  --cover-w: 112px;
+  --cover-h: 168px;
+  --head: 30px;
+  --plank-h: 30px;
+  --row: calc(var(--head) + var(--cover-h) + var(--plank-h));
+  --slot-w: calc(var(--cover-w) + 34px);
+
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wall: #1C211D;
+    --wall-stripe: #20261F;
+    --ink: #F1E7D6;
+    --muted: #B9A891;
+    --accent: #E39A7E;
+    --back: #26170E;
+    --back-seam: #1B0F08;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --wall: #1C211D;
+  --wall-stripe: #20261F;
+  --ink: #F1E7D6;
+  --muted: #B9A891;
+  --accent: #E39A7E;
+  --back: #26170E;
+  --back-seam: #1B0F08;
+  color-scheme: dark;
+}
+@media (min-width: 640px) {
+  :root { --cover-w: 146px; --cover-h: 219px; --head: 36px; --plank-h: 32px; --slot-w: calc(var(--cover-w) + 44px); }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh;
+  /* Striped wallpaper behind the bookcase */
+  background: repeating-linear-gradient(90deg, var(--wall) 0 46px, var(--wall-stripe) 46px 50px), var(--wall);
+  color: var(--ink);
+  font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  padding: env(safe-area-inset-top, 0px) 16px calc(2rem + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Masthead ---------- */
+.masthead { max-width: 40rem; margin: 0 auto; padding: clamp(2rem, 7vh, 4rem) 0 1.5rem; text-align: center; }
+.eyebrow { margin: 0 0 0.4rem; color: var(--accent); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+h1 {
+  margin: 0 0 0.6rem;
+  font-family: "Fraunces", Georgia, serif; font-weight: 600; font-optical-sizing: auto;
+  font-size: clamp(2.6rem, 11vw, 4.2rem); line-height: 1; letter-spacing: -0.02em;
+}
+.lede { margin: 0 auto; max-width: 32rem; color: var(--muted); font-size: 1.1rem; }
+
+/* ---------- Filters: books lying on a ledge ---------- */
+.ledge {
+  position: relative;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end;
+  column-gap: 14px;
+  max-width: 36rem; margin: 0 auto;
+  padding: 0 18px 16px;
+}
+/* The ledge itself */
+.ledge::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 16px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 13px, rgba(0, 0, 0, 0.06) 13px 15px, transparent 15px 31px),
+    linear-gradient(180deg, var(--plank-top) 0 3px, var(--plank) 3px, var(--plank-low) 12px, var(--plank-edge) 12px);
+  border-radius: 2px;
+  box-shadow: 0 10px 14px -8px rgba(30, 15, 5, 0.7);
+}
+/* On narrow screens the books stack into a little pile */
+.book-select { position: relative; flex: 1 1 15rem; max-width: 17rem; z-index: 2; }
+.book-select:nth-child(2) { margin-left: 10px; }
+.book-select.open { z-index: 10; }
+@media (max-width: 560px) {
+  .ledge { flex-direction: column-reverse; align-items: center; }
+  .book-select { flex: none; width: min(100%, 17rem); }
+  .book-select:nth-child(1) { width: min(calc(100% - 10px), 16.2rem); }
+  .book-select:nth-child(2) { margin-left: 0; }
+}
+
+/* A cloth-bound book lying on its side, spine out */
+.spine {
+  --cloth: #7A2E2E;
+  --foil: #E8C877;
+  position: relative; display: flex; align-items: center;
+  width: 100%; height: 56px;
+  padding: 0 44px 0 104px;
+  font: inherit; text-align: left; color: var(--foil);
+  border: 0; border-radius: 5px / 12px;
+  background:
+    /* Gold bands near each end */
+    linear-gradient(90deg, var(--foil) 0 2px, transparent 2px 5px, var(--foil) 5px 6px) left 12px top 0 / 6px 100% no-repeat,
+    linear-gradient(90deg, var(--foil) 0 1px, transparent 1px 4px, var(--foil) 4px 6px) right 12px top 0 / 6px 100% no-repeat,
+    /* Rounded spine shading */
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0, rgba(255, 255, 255, 0.06) 22%, transparent 45%, rgba(0, 0, 0, 0.3) 100%),
+    /* Cloth weave */
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
+    var(--cloth);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25), 0 3px 4px -1px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.book-select:nth-child(2) .spine { --cloth: #2F4B6E; }
+.spine:hover { transform: translateY(-2px); }
+.spine:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.spine-value {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font: italic 400 1.15rem/1 "Fraunces", Georgia, serif;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45), 0 0 6px rgba(232, 200, 119, 0.25);
+}
+.spine-caret {
+  position: absolute; right: 26px; top: 50%;
+  width: 8px; height: 8px; margin-top: -6px;
+  border-right: 2px solid var(--foil, #E8C877); border-bottom: 2px solid var(--foil, #E8C877);
+  transform: rotate(45deg); transition: transform 0.2s ease, margin-top 0.2s ease;
+}
+.open .spine-caret { transform: rotate(-135deg); margin-top: -2px; }
+/* Leather title label on the spine */
+.spine-label {
+  position: absolute; left: 26px; top: 50%; z-index: 1;
+  transform: translateY(-50%);
+  width: 66px; padding: 5px 0;
+  text-align: center;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #E8C877;
+  background: linear-gradient(180deg, #3A2516, #24160C);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(232, 200, 119, 0.6), inset 0 0 0 3px #2E1D11, inset 0 0 0 4px rgba(232, 200, 119, 0.35);
+  pointer-events: none;
+}
+
+/* The page that unfolds: a table of contents */
+.page {
+  position: absolute; top: calc(100% + 10px); left: 6px; right: 6px;
+  min-width: 13rem;
+  padding: 0.9rem 1rem 0.75rem;
+  color: #2B1D14;
+  background:
+    linear-gradient(90deg, rgba(120, 90, 50, 0.12), transparent 8%, transparent 92%, rgba(120, 90, 50, 0.1)),
+    #FBF6EA;
+  border-radius: 2px 2px 4px 4px;
+  box-shadow: 0 1px 0 #E6DCC6, 0 2px 0 #FBF6EA, 0 3px 0 #DDD1B8, 0 18px 30px -10px rgba(30, 15, 5, 0.6);
+  transform-origin: 50% 0;
+  animation: unfold 0.22s ease-out;
+}
+@keyframes unfold { from { opacity: 0; transform: perspective(600px) rotateX(-55deg); } }
+.page-heading {
+  margin: 0 0 0.5rem; text-align: center;
+  font: italic 400 0.95rem "Fraunces", Georgia, serif; color: #8C3B2A; letter-spacing: 0.04em;
+}
+.page-heading::before, .page-heading::after { content: "❧"; font-style: normal; margin: 0 0.5em; opacity: 0.7; }
+.page-heading::before { display: inline-block; transform: scaleX(-1); }
+.contents { list-style: none; margin: 0; padding: 0; max-height: 16rem; overflow-y: auto; outline: none; }
+.entry {
+  position: relative;
+  display: flex; align-items: baseline; gap: 0.4rem;
+  padding: 0.38rem 0.5rem 0.38rem 1.4rem;
+  font: 400 1.02rem/1.3 "Fraunces", Georgia, serif;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.entry.active { background: rgba(140, 59, 42, 0.1); }
+.entry.none { color: #9A8A78; }
+.leader { flex: 1; border-bottom: 2px dotted rgba(107, 86, 70, 0.55); transform: translateY(-0.25em); }
+.entry-count { font-variant-numeric: oldstyle-nums; color: #6B5646; }
+/* A ribbon bookmark marks the current choice */
+.entry[aria-selected="true"]::before {
+  content: ""; position: absolute; left: 0.2rem; top: -0.1rem; bottom: 0.25rem; width: 0.7rem;
+  background: linear-gradient(90deg, #8C2A20, #B23A2C 60%, #8C2A20);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+}
+.entry[aria-selected="true"] .entry-label { font-weight: 600; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.count { margin: 0.9rem 0 1.4rem; text-align: center; color: var(--muted); font-size: 0.95rem; font-weight: 600; }
+
+/* ---------- Bookcase ---------- */
+.bookcase {
+  max-width: 1080px; margin: 0 auto;
+  padding: 0 14px 16px;
+  background: linear-gradient(90deg, var(--frame-dark), var(--frame-light) 6%, var(--frame-light) 94%, var(--frame-dark));
+  border-radius: 6px 6px 3px 3px;
+  box-shadow: 0 30px 50px -24px rgba(30, 15, 5, 0.8), 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+@media (min-width: 640px) { .bookcase { padding: 0 22px 22px; } }
+
+.rail {
+  position: relative; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 13px, rgba(0, 0, 0, 0.06) 13px 15px, transparent 15px 31px),
+    linear-gradient(180deg, #8B5A36, #6A4024);
+  margin: 0 -14px;
+  border-radius: 6px 6px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 4px rgba(0, 0, 0, 0.35);
+  z-index: 1;
+}
+.shelf + .shelf .rail { border-radius: 0; }
+@media (min-width: 640px) { .rail { margin: 0 -22px; height: 40px; } }
+
+.plaque {
+  margin: 0; padding: 0.1rem 1.1rem;
+  font: 600 1.05rem/1.4 "Fraunces", Georgia, serif; letter-spacing: 0.08em;
+  color: var(--brass-ink);
+  background:
+    radial-gradient(circle at 7px 50%, var(--brass-dark) 0 1.6px, transparent 2.2px),
+    radial-gradient(circle at calc(100% - 7px) 50%, var(--brass-dark) 0 1.6px, transparent 2.2px),
+    linear-gradient(180deg, var(--brass-light), var(--brass) 55%, var(--brass-dark));
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* The back panel, with a plank at the bottom of every row. Rows are a fixed height so the planks line up. */
+.shelf-books {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--slot-w));
+  grid-auto-rows: var(--row);
+  justify-content: center;
+  padding: 0 4px;
+  background:
+    repeating-linear-gradient(180deg,
+      rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0) 26px,
+      transparent calc(var(--row) - var(--plank-h)),
+      var(--plank-top) calc(var(--row) - var(--plank-h)),
+      var(--plank-top) calc(var(--row) - var(--plank-h) + 4px),
+      var(--plank) calc(var(--row) - var(--plank-h) + 4px),
+      var(--plank-low) calc(var(--row) - 5px),
+      var(--plank-edge) calc(var(--row) - 5px),
+      var(--plank-edge) var(--row)),
+    repeating-linear-gradient(90deg, transparent 0 118px, var(--back-seam) 118px 120px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 3px, transparent 3px 17px),
+    var(--back);
+  box-shadow: inset 14px 0 18px -10px rgba(0, 0, 0, 0.7), inset -14px 0 18px -10px rgba(0, 0, 0, 0.7);
+}
+
+.slot {
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: var(--plank-h);
+}
+
+/* Bookends hold each shelf's books together */
+.slot:first-child::before, .slot:last-child::after {
+  content: ""; position: absolute; bottom: var(--plank-h);
+  width: 9px; height: calc(var(--cover-h) * 0.62);
+  background: linear-gradient(90deg, var(--brass-dark), var(--brass-light) 45%, var(--brass) 70%, var(--brass-dark));
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+.slot:first-child::before { left: 4px; }
+.slot:last-child::after { right: 4px; }
+@media (min-width: 640px) { .slot:first-child::before { left: 7px; } .slot:last-child::after { right: 7px; } }
+
+.book {
+  position: relative; display: block;
+  width: var(--cover-w); height: var(--cover-h);
+  transform-origin: 50% 100%;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+  outline: none;
+}
+.cover {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  border-radius: 2px 5px 5px 2px;
+  background: #5b4636;
+  /* Page block peeking out the right side, and the shadow on the shelf */
+  box-shadow:
+    2px 0 0 #F2EAD7, 3px 1px 0 #D8CCB2, 4px 1px 0 #F2EAD7, 5px 2px 0 #CFC2A6,
+    0 12px 14px -8px rgba(0, 0, 0, 0.8), 8px 4px 14px -6px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.25s ease;
+}
+/* Spine crease and a little sheen */
+.cover::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.38) 0, rgba(255, 255, 255, 0.2) 3%, rgba(0, 0, 0, 0.14) 6%, transparent 11%),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.16), transparent 38%);
+}
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.book:hover, .book:focus-visible { transform: translateY(-12px) rotate(-2deg); }
+.book:hover .cover, .book:focus-visible .cover {
+  box-shadow:
+    2px 0 0 #F2EAD7, 3px 1px 0 #D8CCB2, 4px 1px 0 #F2EAD7, 5px 2px 0 #CFC2A6,
+    0 26px 22px -12px rgba(0, 0, 0, 0.75), 10px 8px 20px -6px rgba(0, 0, 0, 0.55);
+}
+.book:focus-visible .cover { outline: 3px solid var(--brass-light); outline-offset: 4px; }
+.book:active { transform: translateY(-6px) rotate(-1deg); }
+
+/* Cloth-bound stand-in when there's no cover image */
+.cloth {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 14% 12%;
+  text-align: center; color: #E8C877;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px),
+    var(--cloth);
+  box-shadow: inset 0 0 0 6px var(--cloth), inset 0 0 0 7px rgba(232, 200, 119, 0.7), inset 0 0 0 10px var(--cloth), inset 0 0 0 11px rgba(232, 200, 119, 0.45);
+}
+.cloth-title { font: 600 clamp(0.85rem, 2.6vw, 1.05rem)/1.2 "Fraunces", Georgia, serif; text-wrap: balance; }
+.cloth-rule { width: 30%; height: 1px; background: currentColor; opacity: 0.7; }
+.cloth-author { font: italic 400 0.75rem/1.2 "Fraunces", Georgia, serif; opacity: 0.9; }
+
+/* Brass month plate on the front of the shelf */
+.plate {
+  position: absolute; left: 50%; bottom: calc((var(--plank-h) - 1.25rem) / 2 + 2px);
+  transform: translateX(-50%);
+  height: 1.25rem; padding: 0 0.6rem;
+  display: flex; align-items: center;
+  white-space: nowrap;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--brass-ink);
+  background: linear-gradient(180deg, var(--brass-light), var(--brass) 55%, var(--brass-dark));
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 1px 1px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* Empty shelf */
+.shelf.empty .shelf-books { grid-template-columns: 1fr; }
+.note {
+  align-self: center; justify-self: center;
+  margin-bottom: calc(var(--plank-h) / 2);
+  padding: 1.1rem 1.4rem 1.2rem;
+  max-width: 17rem; text-align: center;
+  font-family: "Fraunces", Georgia, serif; color: #2B1D14;
+  background: repeating-linear-gradient(180deg, transparent 0 23px, var(--paper-line) 23px 24px), var(--paper);
+  border-radius: 2px;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.7);
+}
+.note p { margin: 0 0 0.8rem; font-style: italic; font-size: 1.1rem; }
+.show-all {
+  font: 700 0.95rem "Nunito", system-ui, sans-serif;
+  padding: 0.5rem 1rem; border: 0; border-radius: 99px;
+  color: #FBF6EA; background: #8C3B2A; cursor: pointer;
+}
+.show-all:focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+
+.footer { margin-top: 2rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book, .cover, .spine, .spine-caret { transition: none; }
+  .page { animation: none; }
+  .book:hover, .book:focus-visible, .book:active { transform: none; }
+}

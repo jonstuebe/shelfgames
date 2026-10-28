@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shelf Games</title>
+<meta name="description" content="Every book our book club has read, each with its own little game. Pull one off the shelf to play.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Book club games</p>
+  <h1>Shelf Games</h1>
+  <p class="lede">Every book our club has read, each with its own little game. Pull one off the shelf to play.</p>
+</header>
+
+<div class="ledge" id="filters" role="group" aria-label="Filter the shelves">
+  <div id="year-select"></div>
+  <div id="month-select"></div>
+</div>
+<p class="count" id="count" aria-live="polite"></p>
+
+<main class="bookcase" id="library"></main>
+
+<footer class="footer">A new book, and a new game, every month.</footer>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

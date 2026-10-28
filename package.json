@@ -1,0 +1,16 @@
+{
+  "name": "shelfgames",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "games/*",
+    "site"
+  ],
+  "scripts": {
+    "build": "bun --filter '@shelfgames/*' build",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
+  }
+}
