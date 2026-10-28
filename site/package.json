@@ -6,9 +6,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "deploy": "cf deploy"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.v.6",
+    "cf": "^1.0.0-beta.24",
     "happy-dom": "^21.0.4",
     "vite": "^8.3.5",
     "vitest": "^5.0.5"
