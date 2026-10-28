@@ -7,6 +7,7 @@ two-digit year — November 2026 is `nov26.shelfgames.party`.
 ## Layout
 
 ```
+site/               → shelfgames.party, the bookshelf of every month's book
 games/
   nov26/            → nov26.shelfgames.party
     index.html      entry point
@@ -14,9 +15,27 @@ games/
     package.json    @shelfgames/nov26, plus "shelfgames" metadata (book, month, game)
 ```
 
-Each month is its own [Bun workspace](https://bun.sh/docs/install/workspaces) under
-`games/`, built with [Vite](https://vite.dev) and tested with [Vitest](https://vitest.dev). The `shelfgames` block in each game's `package.json` describes the month's
-book, for the future root site that will show every month as a book on a shelf.
+The site and each month are their own [Bun workspaces](https://bun.sh/docs/install/workspaces),
+built with [Vite](https://vite.dev) and tested with [Vitest](https://vitest.dev).
+
+The root site reads the `shelfgames` block in every `games/*/package.json` at build time and
+puts that book on the shelf, linked to its subdomain:
+
+```json
+"shelfgames": {
+  "subdomain": "nov26",
+  "month": "2026-11",
+  "book": "The House in the Cerulean Sea",
+  "author": "TJ Klune",
+  "isbn": "9781250217288",
+  "game": "Which Marsyas Island Resident Are You?"
+}
+```
+
+The cover comes from [Open Library](https://openlibrary.org) by ISBN. To use a specific
+image instead, add `"cover"` with its URL. With neither, or if the cover can't load, the book
+gets a cloth-bound cover with its title in gold. The site's tests check that every game's
+metadata is complete and that its subdomain matches its folder and month.
 
 ## Getting started
 
@@ -28,7 +47,7 @@ bun run build               # build every game into games/*/dist
 bun run test                # run every game's tests (Vitest projects)
 ```
 
-Inside a game folder (for example `cd games/nov26`):
+Inside `site/` or a game folder (for example `cd games/nov26`):
 
 ```sh
 bun run dev                 # Vite dev server with hot reload
@@ -44,5 +63,5 @@ own module (like `games/nov26/src/quiz.js`) so Vitest can import it without a br
 
 1. Copy an existing game folder to `games/<mon><yy>` (for example `games/dec26`).
 2. In its `package.json`, update `name` to `@shelfgames/<mon><yy>` and fill in the
-   `shelfgames` metadata.
-3. Run `bun install` from the root.
+   `shelfgames` metadata. Its book shows up on the root site automatically.
+3. Run `bun install` from the root, then `bun run test` to check the metadata.

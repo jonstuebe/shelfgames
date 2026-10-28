@@ -1,0 +1,307 @@
+:root {
+  --wall: #EDE3D1;
+  --wall-stripe: #E5D9C3;
+  --ink: #2B1D14;
+  --muted: #6B5646;
+  --accent: #8C3B2A;
+
+  /* Walnut bookcase */
+  --frame-light: #7A4B2C;
+  --frame-dark: #4A2C19;
+  --back: #3A2416;
+  --back-seam: #2C1A0F;
+  --plank-top: #C18A5A;
+  --plank: #96613A;
+  --plank-low: #7C4E2D;
+  --plank-edge: #4F301B;
+
+  /* Brass and paper */
+  --brass-light: #F1D58C;
+  --brass: #C9A04E;
+  --brass-dark: #8E6B26;
+  --brass-ink: #3D2B0C;
+  --paper: #FBF6EA;
+  --paper-line: #D9CDB4;
+
+  --cover-w: 112px;
+  --cover-h: 168px;
+  --head: 30px;
+  --plank-h: 30px;
+  --row: calc(var(--head) + var(--cover-h) + var(--plank-h));
+  --slot-w: calc(var(--cover-w) + 34px);
+
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wall: #1C211D;
+    --wall-stripe: #20261F;
+    --ink: #F1E7D6;
+    --muted: #B9A891;
+    --accent: #E39A7E;
+    --back: #26170E;
+    --back-seam: #1B0F08;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --wall: #1C211D;
+  --wall-stripe: #20261F;
+  --ink: #F1E7D6;
+  --muted: #B9A891;
+  --accent: #E39A7E;
+  --back: #26170E;
+  --back-seam: #1B0F08;
+  color-scheme: dark;
+}
+@media (min-width: 640px) {
+  :root { --cover-w: 146px; --cover-h: 219px; --head: 36px; --plank-h: 32px; --slot-w: calc(var(--cover-w) + 44px); }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh;
+  /* Striped wallpaper behind the bookcase */
+  background: repeating-linear-gradient(90deg, var(--wall) 0 46px, var(--wall-stripe) 46px 50px), var(--wall);
+  color: var(--ink);
+  font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  padding: env(safe-area-inset-top, 0px) 16px calc(2rem + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Masthead ---------- */
+.masthead { max-width: 40rem; margin: 0 auto; padding: clamp(2rem, 7vh, 4rem) 0 1.5rem; text-align: center; }
+.eyebrow { margin: 0 0 0.4rem; color: var(--accent); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+h1 {
+  margin: 0 0 0.6rem;
+  font-family: "Fraunces", Georgia, serif; font-weight: 600; font-optical-sizing: auto;
+  font-size: clamp(2.6rem, 11vw, 4.2rem); line-height: 1; letter-spacing: -0.02em;
+}
+.lede { margin: 0 auto; max-width: 32rem; color: var(--muted); font-size: 1.1rem; }
+
+/* ---------- Card catalog filters ---------- */
+.catalog {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+  max-width: 34rem; margin: 0 auto;
+  padding: 12px;
+  background: linear-gradient(180deg, var(--frame-light), var(--frame-dark));
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 22px -10px rgba(30, 15, 5, 0.7);
+}
+.drawer {
+  flex: 1 1 13rem;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 10px 12px 12px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 3px, transparent 3px 11px, rgba(0, 0, 0, 0.05) 11px 13px, transparent 13px 24px),
+    linear-gradient(180deg, #A9714A, #87552F);
+  border-radius: 5px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.25), 0 2px 3px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+.drawer-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #F6E7CF; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+/* A paper card held in a brass frame */
+.card {
+  position: relative; width: 100%;
+  padding: 3px;
+  background: linear-gradient(180deg, var(--brass-light), var(--brass) 45%, var(--brass-dark));
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.card select {
+  appearance: none; -webkit-appearance: none;
+  width: 100%; padding: 0.45rem 2rem 0.45rem 0.75rem;
+  font: italic 400 1.05rem/1.3 "Fraunces", Georgia, serif; color: #2B1D14;
+  background:
+    linear-gradient(45deg, transparent 50%, #6B5646 50%) right 0.95rem center / 6px 6px no-repeat,
+    linear-gradient(-45deg, transparent 50%, #6B5646 50%) right 0.6rem center / 6px 6px no-repeat,
+    linear-gradient(0deg, transparent 5px, var(--paper-line) 5px 6px, transparent 6px),
+    var(--paper);
+  border: 0; border-radius: 2px;
+  cursor: pointer;
+}
+.card select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.pull {
+  width: 44px; height: 9px; border-radius: 0 0 10px 10px;
+  background: linear-gradient(180deg, var(--brass-light), var(--brass-dark));
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+.count { margin: 0.9rem 0 1.4rem; text-align: center; color: var(--muted); font-size: 0.95rem; font-weight: 600; }
+
+/* ---------- Bookcase ---------- */
+.bookcase {
+  max-width: 1080px; margin: 0 auto;
+  padding: 0 14px 16px;
+  background: linear-gradient(90deg, var(--frame-dark), var(--frame-light) 6%, var(--frame-light) 94%, var(--frame-dark));
+  border-radius: 6px 6px 3px 3px;
+  box-shadow: 0 30px 50px -24px rgba(30, 15, 5, 0.8), 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+@media (min-width: 640px) { .bookcase { padding: 0 22px 22px; } }
+
+.rail {
+  position: relative; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 13px, rgba(0, 0, 0, 0.06) 13px 15px, transparent 15px 31px),
+    linear-gradient(180deg, #8B5A36, #6A4024);
+  margin: 0 -14px;
+  border-radius: 6px 6px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 4px rgba(0, 0, 0, 0.35);
+  z-index: 1;
+}
+.shelf + .shelf .rail { border-radius: 0; }
+@media (min-width: 640px) { .rail { margin: 0 -22px; height: 40px; } }
+
+.plaque {
+  margin: 0; padding: 0.1rem 1.1rem;
+  font: 600 1.05rem/1.4 "Fraunces", Georgia, serif; letter-spacing: 0.08em;
+  color: var(--brass-ink);
+  background:
+    radial-gradient(circle at 7px 50%, var(--brass-dark) 0 1.6px, transparent 2.2px),
+    radial-gradient(circle at calc(100% - 7px) 50%, var(--brass-dark) 0 1.6px, transparent 2.2px),
+    linear-gradient(180deg, var(--brass-light), var(--brass) 55%, var(--brass-dark));
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* The back panel, with a plank at the bottom of every row. Rows are a fixed height so the planks line up. */
+.shelf-books {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--slot-w));
+  grid-auto-rows: var(--row);
+  justify-content: center;
+  padding: 0 4px;
+  background:
+    repeating-linear-gradient(180deg,
+      rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0) 26px,
+      transparent calc(var(--row) - var(--plank-h)),
+      var(--plank-top) calc(var(--row) - var(--plank-h)),
+      var(--plank-top) calc(var(--row) - var(--plank-h) + 4px),
+      var(--plank) calc(var(--row) - var(--plank-h) + 4px),
+      var(--plank-low) calc(var(--row) - 5px),
+      var(--plank-edge) calc(var(--row) - 5px),
+      var(--plank-edge) var(--row)),
+    repeating-linear-gradient(90deg, transparent 0 118px, var(--back-seam) 118px 120px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 3px, transparent 3px 17px),
+    var(--back);
+  box-shadow: inset 14px 0 18px -10px rgba(0, 0, 0, 0.7), inset -14px 0 18px -10px rgba(0, 0, 0, 0.7);
+}
+
+.slot {
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: var(--plank-h);
+}
+
+/* Bookends hold each shelf's books together */
+.slot:first-child::before, .slot:last-child::after {
+  content: ""; position: absolute; bottom: var(--plank-h);
+  width: 9px; height: calc(var(--cover-h) * 0.62);
+  background: linear-gradient(90deg, var(--brass-dark), var(--brass-light) 45%, var(--brass) 70%, var(--brass-dark));
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+.slot:first-child::before { left: 4px; }
+.slot:last-child::after { right: 4px; }
+@media (min-width: 640px) { .slot:first-child::before { left: 7px; } .slot:last-child::after { right: 7px; } }
+
+.book {
+  position: relative; display: block;
+  width: var(--cover-w); height: var(--cover-h);
+  transform-origin: 50% 100%;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+  outline: none;
+}
+.cover {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  border-radius: 2px 5px 5px 2px;
+  background: #5b4636;
+  /* Page block peeking out the right side, and the shadow on the shelf */
+  box-shadow:
+    2px 0 0 #F2EAD7, 3px 1px 0 #D8CCB2, 4px 1px 0 #F2EAD7, 5px 2px 0 #CFC2A6,
+    0 12px 14px -8px rgba(0, 0, 0, 0.8), 8px 4px 14px -6px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.25s ease;
+}
+/* Spine crease and a little sheen */
+.cover::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.38) 0, rgba(255, 255, 255, 0.2) 3%, rgba(0, 0, 0, 0.14) 6%, transparent 11%),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.16), transparent 38%);
+}
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.book:hover, .book:focus-visible { transform: translateY(-12px) rotate(-2deg); }
+.book:hover .cover, .book:focus-visible .cover {
+  box-shadow:
+    2px 0 0 #F2EAD7, 3px 1px 0 #D8CCB2, 4px 1px 0 #F2EAD7, 5px 2px 0 #CFC2A6,
+    0 26px 22px -12px rgba(0, 0, 0, 0.75), 10px 8px 20px -6px rgba(0, 0, 0, 0.55);
+}
+.book:focus-visible .cover { outline: 3px solid var(--brass-light); outline-offset: 4px; }
+.book:active { transform: translateY(-6px) rotate(-1deg); }
+
+/* Cloth-bound stand-in when there's no cover image */
+.cloth {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 14% 12%;
+  text-align: center; color: #E8C877;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px),
+    var(--cloth);
+  box-shadow: inset 0 0 0 6px var(--cloth), inset 0 0 0 7px rgba(232, 200, 119, 0.7), inset 0 0 0 10px var(--cloth), inset 0 0 0 11px rgba(232, 200, 119, 0.45);
+}
+.cloth-title { font: 600 clamp(0.85rem, 2.6vw, 1.05rem)/1.2 "Fraunces", Georgia, serif; text-wrap: balance; }
+.cloth-rule { width: 30%; height: 1px; background: currentColor; opacity: 0.7; }
+.cloth-author { font: italic 400 0.75rem/1.2 "Fraunces", Georgia, serif; opacity: 0.9; }
+
+/* Brass month plate on the front of the shelf */
+.plate {
+  position: absolute; left: 50%; bottom: calc((var(--plank-h) - 1.25rem) / 2 + 2px);
+  transform: translateX(-50%);
+  height: 1.25rem; padding: 0 0.6rem;
+  display: flex; align-items: center;
+  white-space: nowrap;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--brass-ink);
+  background: linear-gradient(180deg, var(--brass-light), var(--brass) 55%, var(--brass-dark));
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 1px 1px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* Empty shelf */
+.shelf.empty .shelf-books { grid-template-columns: 1fr; }
+.note {
+  align-self: center; justify-self: center;
+  margin-bottom: calc(var(--plank-h) / 2);
+  padding: 1.1rem 1.4rem 1.2rem;
+  max-width: 17rem; text-align: center;
+  font-family: "Fraunces", Georgia, serif; color: #2B1D14;
+  background: repeating-linear-gradient(180deg, transparent 0 23px, var(--paper-line) 23px 24px), var(--paper);
+  border-radius: 2px;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.7);
+}
+.note p { margin: 0 0 0.8rem; font-style: italic; font-size: 1.1rem; }
+.show-all {
+  font: 700 0.95rem "Nunito", system-ui, sans-serif;
+  padding: 0.5rem 1rem; border: 0; border-radius: 99px;
+  color: #FBF6EA; background: #8C3B2A; cursor: pointer;
+}
+.show-all:focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+
+.footer { margin-top: 2rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book, .cover { transition: none; }
+  .book:hover, .book:focus-visible, .book:active { transform: none; }
+}

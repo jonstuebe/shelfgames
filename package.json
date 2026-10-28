@@ -3,10 +3,11 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "games/*"
+    "games/*",
+    "site"
   ],
   "scripts": {
-    "build": "bun --filter './games/*' build",
+    "build": "bun --filter '@shelfgames/*' build",
     "test": "vitest"
   },
   "devDependencies": {
