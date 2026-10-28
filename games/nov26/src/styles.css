@@ -134,7 +134,9 @@ main {
   position: relative; z-index: 1;
   min-height: 100%;
   display: flex; align-items: flex-start; justify-content: center;
-  padding: clamp(1.25rem, 6vh, 4rem) 1rem 40vh;
+  padding:
+    calc(clamp(1.25rem, 6vh, 4rem) + env(safe-area-inset-top, 0px)) 1rem
+    calc(clamp(1.25rem, 6vh, 4rem) + env(safe-area-inset-bottom, 0px));
 }
 .card {
   width: 100%; max-width: 34rem;
