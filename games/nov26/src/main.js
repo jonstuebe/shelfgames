@@ -1,4 +1,5 @@
 import { characters, questions, REVEAL_AT, isRevealed, scoreAnswers } from "./quiz.js";
+import { buildSea } from "./sea.js";
 
 const card = document.getElementById("card");
 const STORE_KEY = "cerulean-quiz-result-v1";
@@ -175,6 +176,8 @@ function showSaved() {
 
 result = loadLocal();
 result ? showSaved() : showIntro();
+
+buildSea(document.getElementById("sea"));
 
 // Rain
 (function makeRain() {

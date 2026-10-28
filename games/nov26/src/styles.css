@@ -102,19 +102,45 @@ body {
   animation: fall linear infinite;
 }
 @keyframes fall { to { transform: translateY(115vh); } }
-.sea { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 34vh; min-height: 180px; }
-.sea path { transition: fill 1.4s ease; }
-.wave-back { fill: color-mix(in srgb, var(--sea-back) calc(40% + var(--p) * 60%), var(--rain-bottom)); }
-.wave-mid { fill: color-mix(in srgb, var(--sea-mid) calc(40% + var(--p) * 60%), var(--rain-top)); }
-.wave-front { fill: color-mix(in srgb, var(--sea-front) calc(40% + var(--p) * 60%), var(--rain-top)); }
-.sway { animation: sway 9s ease-in-out infinite alternate; }
-.sway.slow { animation-duration: 13s; }
-@keyframes sway { from { transform: translateX(-3%); } to { transform: translateX(3%); } }
+.sea { position: absolute; left: 0; right: 0; bottom: 0; height: 36vh; min-height: 190px; }
+.wave-layer {
+  position: absolute; inset: 0;
+  transform-origin: bottom;
+  /* A taller, choppier swell in the rain that settles as the sky clears */
+  transform: scaleY(calc(1.18 - var(--p) * 0.2));
+  transition: transform 1.4s ease;
+}
+.wave-bob { position: absolute; inset: -12px 0 0; animation: bob ease-in-out infinite alternate; }
+/* Two tiles wide. A tile is at least 1100px so narrow phones show a slice of the sea instead of squashing it. */
+.wave-roll { position: absolute; left: 0; bottom: 0; width: calc(2 * max(100vw, 1100px)); height: 100%; animation: roll linear infinite; }
+.wave-roll.reverse { animation-direction: reverse; }
+@keyframes roll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes bob { from { transform: translateY(0); } to { transform: translateY(12px); } }
+.wave-body { transition: fill 1.4s ease; }
+.wave-crest { fill: none; stroke: #fff; stroke-width: 2.5px; stroke-linecap: round; opacity: 0.35; }
+.wave-far .wave-body { fill: color-mix(in srgb, color-mix(in srgb, var(--sea-back) 60%, var(--sky-bottom)) calc(40% + var(--p) * 60%), var(--rain-bottom)); }
+.wave-far .wave-crest { opacity: 0.25; }
+.wave-back .wave-body { fill: color-mix(in srgb, var(--sea-back) calc(40% + var(--p) * 60%), var(--rain-bottom)); }
+.wave-mid .wave-body { fill: color-mix(in srgb, var(--sea-mid) calc(40% + var(--p) * 60%), var(--rain-top)); }
+.wave-front .wave-body { fill: color-mix(in srgb, var(--sea-front) calc(40% + var(--p) * 60%), var(--rain-top)); }
+.wave-front .wave-crest { opacity: 0.45; stroke-width: 3px; }
+.glints { position: absolute; inset: 0; opacity: var(--p); transition: opacity 1.4s ease; }
+.glint {
+  position: absolute; width: 14px; height: 3px; border-radius: 99px;
+  background: color-mix(in srgb, var(--sun) 40%, #fff);
+  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--sun) 60%, transparent);
+  opacity: 0; animation: glint ease-in-out infinite;
+}
+@keyframes glint {
+  0%, 100% { opacity: 0; transform: scaleX(0.3); }
+  50% { opacity: 0.9; transform: scaleX(1); }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .drop, .sway { animation: none; }
+  .drop, .wave-roll, .wave-bob { animation: none; }
+  .glint { animation: none; opacity: 0.6; }
   .rain { display: none; }
-  .gloom, .sun, .sea path, .card { transition: none !important; }
+  .gloom, .sun, .wave-layer, .wave-body, .glints, .card { transition: none !important; }
 }
 
 /* ---------- Card ---------- */
