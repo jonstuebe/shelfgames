@@ -40,13 +40,19 @@ function loadLocal() {
 
 function showIntro() {
   step = -1; answers = []; setTide(0);
-  const revealLine = isRevealed()
-    ? "The big reveal has happened. Take the quiz to find out who you are."
-    : "Your answer stays sealed until we’re all together on Sunday, November 22, at noon. Then everyone opens their phone at once.";
+  const steps = isRevealed()
+    ? `<p class="small">The big reveal has happened. Take the quiz to find out who you are.</p>`
+    : `<ol class="steps">
+        <li>Answer eight quick questions. The rain clears as you go.</li>
+        <li>Your match gets sealed. Not even you can peek.</li>
+        <li>At book club on <strong>Sunday, November 22, at noon</strong>, everyone opens their phone and reveals together.</li>
+      </ol>`;
   render(`
+    <p class="eyebrow">Book club · November 2026</p>
     <h1>Which Marsyas Island resident are you?</h1>
-    <p class="lede">Eight questions stand between you and the sea. Answer honestly, and the rain will clear as you go.</p>
-    <p class="small">${revealLine}</p>
+    <p class="book">A little game for <cite>The House in the Cerulean Sea</cite> by TJ Klune</p>
+    <p class="lede">Linus Baker was sent to the island to judge the children in Arthur Parnassus’s care. Now it’s your turn to be sized up. Find out which resident of the house you’re most like.</p>
+    ${steps}
     <div class="row"><button class="btn" id="start">Start the quiz</button></div>
   `);
   document.getElementById("start").onclick = () => showQuestion(0);
