@@ -1,8 +1,10 @@
-import { characters, questions, REVEAL_AT, isRevealed, scoreAnswers } from "./quiz.js";
+import { characters, questions, REVEAL_AT, isRevealed, revealStage, scoreAnswers } from "./quiz.js";
 import { buildSea } from "./sea.js";
 
 const card = document.getElementById("card");
 const STORE_KEY = "cerulean-quiz-result-v1";
+// Set once this phone has done the big reveal, so later visits skip the "tap together" screen.
+const REVEALED_KEY = "cerulean-quiz-revealed-v1";
 let step = -1;
 let answers = [];
 let result = null;
@@ -30,6 +32,12 @@ function saveResult() {
 function clearResult() {
   result = null;
   try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+}
+function markRevealed() {
+  try { localStorage.setItem(REVEALED_KEY, "1"); } catch (e) {}
+}
+function hasRevealed() {
+  try { return localStorage.getItem(REVEALED_KEY) === "1"; } catch (e) { return false; }
 }
 function loadLocal() {
   try {
@@ -89,7 +97,7 @@ function showQuestion(i) {
 function finishQuiz() {
   result = scoreAnswers(answers);
   saveResult();
-  isRevealed() ? showReady() : showCountdown();
+  showSaved();
 }
 
 /* ---------- Countdown ---------- */
@@ -111,7 +119,7 @@ function showCountdown() {
   `);
   const tick = () => {
     const ms = REVEAL_AT - Date.now();
-    if (ms <= 0) { showReady(); return; }
+    if (ms <= 0) { showSaved(); return; }
     const t = Math.floor(ms / 1000);
     document.getElementById("cd-d").textContent = Math.floor(t / 86400);
     document.getElementById("cd-h").textContent = pad(Math.floor(t % 86400 / 3600));
@@ -130,7 +138,7 @@ function showReady() {
     <p class="lede">Everyone ready? Tap together on three.</p>
     <div class="row"><button class="btn" id="reveal">Reveal my character</button></div>
   `);
-  document.getElementById("reveal").onclick = () => { setTide(1); renderResult(); };
+  document.getElementById("reveal").onclick = () => { markRevealed(); renderResult(); };
 }
 
 /* ---------- Results ---------- */
@@ -170,8 +178,12 @@ function showSecond() {
 }
 
 /* ---------- Start up ---------- */
+// Sealed: count down. Book club day: everyone taps together the first time. After that: straight to the result.
 function showSaved() {
-  isRevealed() ? showReady() : showCountdown();
+  const stage = revealStage();
+  if (stage === "sealed") showCountdown();
+  else if (stage === "reveal-day" && !hasRevealed()) showReady();
+  else renderResult();
 }
 
 result = loadLocal();

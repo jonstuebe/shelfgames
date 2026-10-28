@@ -65,7 +65,16 @@ export const questions = [
 // Reveal: Sunday, Nov 22, 2026 at 12:00 noon Arizona time (MST, UTC-7, no daylight saving)
 export const REVEAL_AT = Date.parse("2026-11-22T19:00:00Z");
 
+// The rest of reveal day, until midnight Arizona time, is for revealing together at book club.
+export const REVEAL_DAY_END = Date.parse("2026-11-23T07:00:00Z");
+
 export function isRevealed(now = Date.now()) { return now >= REVEAL_AT; }
+
+// "sealed" before the reveal, "reveal-day" for the rest of book club day, then "open".
+export function revealStage(now = Date.now()) {
+  if (now < REVEAL_AT) return "sealed";
+  return now < REVEAL_DAY_END ? "reveal-day" : "open";
+}
 
 // answers[i] is the index of the option picked for questions[i]. Ties are broken at random.
 export function scoreAnswers(answers, random = Math.random) {

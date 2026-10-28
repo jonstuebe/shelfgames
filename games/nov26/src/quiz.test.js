@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { characters, questions, REVEAL_AT, isRevealed, scoreAnswers } from "./quiz.js";
+import { characters, questions, REVEAL_AT, REVEAL_DAY_END, isRevealed, revealStage, scoreAnswers } from "./quiz.js";
 
 describe("quiz data", () => {
   it("has eight questions with four options each", () => {
@@ -53,5 +53,20 @@ describe("reveal time", () => {
   it("stays sealed until the reveal", () => {
     expect(isRevealed(REVEAL_AT - 1)).toBe(false);
     expect(isRevealed(REVEAL_AT)).toBe(true);
+  });
+
+  it("keeps the tap-together reveal for the rest of book club day, then opens up", () => {
+    expect(revealStage(REVEAL_AT - 1)).toBe("sealed");
+    expect(revealStage(REVEAL_AT)).toBe("reveal-day");
+    expect(revealStage(REVEAL_DAY_END - 1)).toBe("reveal-day");
+    expect(revealStage(REVEAL_DAY_END)).toBe("open");
+    expect(revealStage(Date.parse("2027-03-01T12:00:00Z"))).toBe("open");
+  });
+
+  it("ends reveal day at midnight Arizona time", () => {
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat("en-US", { timeZone: "America/Phoenix", day: "numeric", hour: "numeric", minute: "numeric", hourCycle: "h23" })
+        .formatToParts(new Date(REVEAL_DAY_END)).map(p => [p.type, p.value]));
+    expect(parts).toMatchObject({ day: "23", hour: "00", minute: "00" });
   });
 });
