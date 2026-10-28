@@ -10,7 +10,13 @@
     "game": "Which Marsyas Island Resident Are You?"
   },
   "scripts": {
-    "dev": "bun --port 3000 ./index.html",
-    "build": "bun build ./index.html --outdir ./dist --minify"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
 }

@@ -6,6 +6,10 @@
     "games/*"
   ],
   "scripts": {
-    "build": "bun --filter './games/*' build"
+    "build": "bun --filter './games/*' build",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
   }
 }

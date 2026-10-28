@@ -10,27 +10,35 @@ two-digit year — November 2026 is `nov26.shelfgames.party`.
 games/
   nov26/            → nov26.shelfgames.party
     index.html      entry point
-    src/            styles and scripts
+    src/            styles, scripts and *.test.js files
     package.json    @shelfgames/nov26, plus "shelfgames" metadata (book, month, game)
 ```
 
 Each month is its own [Bun workspace](https://bun.sh/docs/install/workspaces) under
-`games/`. The `shelfgames` block in each game's `package.json` describes the month's
+`games/`, built with [Vite](https://vite.dev) and tested with [Vitest](https://vitest.dev). The `shelfgames` block in each game's `package.json` describes the month's
 book, for the future root site that will show every month as a book on a shelf.
 
 ## Getting started
 
-Requires [Bun](https://bun.sh) 1.2 or newer.
+Requires [Bun](https://bun.sh), which installs packages and runs the workspaces.
 
 ```sh
 bun install
-cd games/nov26 && bun run dev       # dev server with hot reload on http://localhost:3000
-bun run build                       # from the root: build every game into games/*/dist
+bun run build               # build every game into games/*/dist
+bun run test                # run every game's tests (Vitest projects)
 ```
 
-Games are plain HTML, CSS and JavaScript, bundled by Bun's built-in HTML bundler. No
-framework is required, but a game can add whatever dependencies it needs to its own
-`package.json`.
+Inside a game folder (for example `cd games/nov26`):
+
+```sh
+bun run dev                 # Vite dev server with hot reload
+bun run build               # production build into dist/
+bun run preview             # serve the production build locally
+bun run test                # Vitest in watch mode
+```
+
+Games are plain HTML, CSS and JavaScript. Keep game logic that's worth testing in its
+own module (like `games/nov26/src/quiz.js`) so Vitest can import it without a browser.
 
 ## Adding a month
 
