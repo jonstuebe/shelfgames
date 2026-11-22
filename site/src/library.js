@@ -12,6 +12,12 @@ export function subdomainFor(year, month) {
   return MONTHS[month - 1].slice(0, 3).toLowerCase() + String(year).slice(-2);
 }
 
+// A month with more than one book gives the others a short slug: "nov26-produce".
+export function subdomainMatchesMonth(subdomain, year, month) {
+  const base = subdomainFor(year, month);
+  return subdomain === base || new RegExp(`^${base}-[a-z0-9]+(-[a-z0-9]+)*$`).test(subdomain ?? "");
+}
+
 export function gameUrl(subdomain) {
   return `https://${subdomain}.${DOMAIN}`;
 }
@@ -33,8 +39,10 @@ export function validateGame(meta) {
   const match = /^(\d{4})-(\d{2})$/.exec(meta.month || "");
   const month = match && Number(match[2]);
   if (!match || month < 1 || month > 12) errors.push(`"month" should look like "2026-11", not "${meta.month}"`);
-  else if (meta.subdomain !== subdomainFor(Number(match[1]), month))
-    errors.push(`"subdomain" should be "${subdomainFor(Number(match[1]), month)}" for ${meta.month}, not "${meta.subdomain}"`);
+  else if (!subdomainMatchesMonth(meta.subdomain, Number(match[1]), month)) {
+    const base = subdomainFor(Number(match[1]), month);
+    errors.push(`"subdomain" should be "${base}" or "${base}-<book>" for ${meta.month}, not "${meta.subdomain}"`);
+  }
   if (meta.isbn != null && !/^(\d{9}[\dX]|\d{13})$/.test(meta.isbn))
     errors.push(`"isbn" should be 10 or 13 digits with no dashes, not "${meta.isbn}"`);
   return errors;
