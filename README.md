@@ -2,7 +2,8 @@
 
 Little games for book club, one per month. Each one lives at its own subdomain of
 [shelfgames.party](https://shelfgames.party), named with the three-letter month and
-two-digit year — November 2026 is `nov26.shelfgames.party`.
+two-digit year — November 2026 is `nov26.shelfgames.party`. When a month has more than one
+book, each extra one adds a short slug: `nov26-produce.shelfgames.party`.
 
 ## Layout
 
@@ -10,6 +11,7 @@ two-digit year — November 2026 is `nov26.shelfgames.party`.
 site/               → shelfgames.party, the bookshelf of every month's book
 games/
   nov26/            → nov26.shelfgames.party
+  nov26-produce/    → nov26-produce.shelfgames.party (a second book that month)
     index.html      entry point
     src/            styles, scripts and *.test.js files
     package.json    @shelfgames/nov26, plus "shelfgames" metadata (book, month, game)
@@ -64,4 +66,6 @@ own module (like `games/nov26/src/quiz.js`) so Vitest can import it without a br
 1. Copy an existing game folder to `games/<mon><yy>` (for example `games/dec26`).
 2. In its `package.json`, update `name` to `@shelfgames/<mon><yy>` and fill in the
    `shelfgames` metadata. Its book shows up on the root site automatically.
+   For a second book in a month that already has one, use `games/<mon><yy>-<slug>` (for
+   example `games/nov26-produce`) and the same name as its `subdomain`.
 3. Run `bun install` from the root, then `bun run test` to check the metadata.

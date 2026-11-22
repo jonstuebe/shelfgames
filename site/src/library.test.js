@@ -46,9 +46,18 @@ describe("validateGame", () => {
     expect(validateGame(meta({ isbn: "9781250217288" }))).toEqual([]);
   });
 
+  it("lets a second book in the same month add a slug", () => {
+    expect(validateGame(meta({ subdomain: "nov26-produce" }))).toEqual([]);
+    expect(validateGame(meta({ subdomain: "nov26-big-swamp" }))).toEqual([]);
+    expect(validateGame(meta({ subdomain: "dec26-produce" }))[0]).toMatch(/should be "nov26" or "nov26-<book>"/);
+    expect(validateGame(meta({ subdomain: "nov26-" }))).toHaveLength(1);
+    expect(validateGame(meta({ subdomain: "nov26produce" }))).toHaveLength(1);
+    expect(validateGame(meta({ subdomain: "nov26-Produce" }))).toHaveLength(1);
+  });
+
   it("explains what's wrong", () => {
     expect(validateGame(undefined)).toEqual(['is missing its "shelfgames" block']);
-    expect(validateGame(meta({ subdomain: "nov-26" }))).toEqual(['"subdomain" should be "nov26" for 2026-11, not "nov-26"']);
+    expect(validateGame(meta({ subdomain: "nov-26" }))).toEqual(['"subdomain" should be "nov26" or "nov26-<book>" for 2026-11, not "nov-26"']);
     expect(validateGame(meta({ month: "Nov 2026" }))[0]).toMatch(/"month" should look like "2026-11"/);
     expect(validateGame(meta({ month: "2026-13" }))[0]).toMatch(/"month" should look like/);
     expect(validateGame(meta({ book: "" }))).toEqual(['needs a "book"']);

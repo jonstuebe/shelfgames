@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Never Have I Ever: Produce Edition · Pounded by Produce</title>
+<meta name="description" content="A book club party game for Pounded by Produce by G. M. Fairy. Draw a card, confess, and lose a pea.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nov26-produce.shelfgames.party/">
+<meta property="og:title" content="Never Have I Ever: Produce Edition">
+<meta property="og:description" content="A book club party game for Pounded by Produce by G. M. Fairy. Draw a card, confess, and lose a pea.">
+<meta property="og:image" content="https://nov26-produce.shelfgames.party/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A tomato and a cucumber in little clerical collars under a harvest moon, with the title Never Have I Ever.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <svg class="hero-art" viewBox="0 0 320 214" role="img" aria-label="A tomato and a cucumber in little clerical collars lean toward each other in front of a harvest moon">
+      <circle cx="160" cy="108" r="100" fill="var(--moon)"/>
+      <circle cx="108" cy="62" r="13" fill="var(--moon-crater)" opacity="0.7"/>
+      <circle cx="226" cy="76" r="8" fill="var(--moon-crater)" opacity="0.7"/>
+      <circle cx="232" cy="40" r="5" fill="var(--moon-crater)" opacity="0.7"/>
+      <g transform="translate(112 134) rotate(-8)">
+        <circle r="42" fill="#D8372A" stroke="#2A1630" stroke-width="4"/>
+        <ellipse cx="-16" cy="-16" rx="9" ry="5" fill="#fff" opacity="0.35" transform="rotate(-35 -16 -16)"/>
+        <path d="M0 -37 L-12 -46 L-8 -34 L-22 -30 L-8 -26 L0 -30 L8 -26 L22 -30 L8 -34 L12 -46 Z" fill="#2E7D32" stroke="#2A1630" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="-13" cy="-4" r="4.5" fill="#2A1630"/>
+        <circle cx="13" cy="-4" r="4.5" fill="#2A1630"/>
+        <circle cx="-23" cy="6" r="6" fill="#FF8A80" opacity="0.8"/>
+        <circle cx="23" cy="6" r="6" fill="#FF8A80" opacity="0.8"/>
+        <path d="M-9 8 Q0 17 9 8" fill="none" stroke="#2A1630" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="-14" y="26" width="28" height="9" rx="2.5" fill="#fff" stroke="#2A1630" stroke-width="2.5"/>
+      </g>
+      <g transform="translate(212 128) rotate(10)">
+        <rect x="-26" y="-68" width="52" height="136" rx="26" fill="#27793A" stroke="#2A1630" stroke-width="4"/>
+        <path d="M-12 -62 Q-16 0 -12 62" fill="none" stroke="#1B5E2C" stroke-width="3" opacity="0.6"/>
+        <path d="M12 -62 Q16 0 12 62" fill="none" stroke="#1B5E2C" stroke-width="3" opacity="0.6"/>
+        <circle cx="-17" cy="30" r="2.6" fill="#1B5E2C"/>
+        <circle cx="17" cy="42" r="2.6" fill="#1B5E2C"/>
+        <circle cx="-8" cy="52" r="2.6" fill="#1B5E2C"/>
+        <circle cx="-9" cy="-28" r="4.5" fill="#fff"/>
+        <circle cx="9" cy="-28" r="4.5" fill="#fff"/>
+        <circle cx="-8" cy="-27" r="2.4" fill="#2A1630"/>
+        <circle cx="10" cy="-27" r="2.4" fill="#2A1630"/>
+        <circle cx="-17" cy="-16" r="5.5" fill="#FF8A80" opacity="0.8"/>
+        <circle cx="17" cy="-16" r="5.5" fill="#FF8A80" opacity="0.8"/>
+        <path d="M-7 -14 Q0 -6 7 -14" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+        <rect x="-15" y="2" width="30" height="9" rx="2.5" fill="#fff" stroke="#2A1630" stroke-width="2.5"/>
+      </g>
+    </svg>
+    <h1>Never Have I Ever</h1>
+    <p class="sub">The Pounded by Produce edition. Draw a card, confess, and lose a pea.</p>
+    <button class="btn-ghost how" id="howBtn" type="button">How to play</button>
+  </header>
+
+  <main>
+    <section class="deck" aria-label="Card deck">
+      <button class="card" id="card" data-cat="start" type="button" aria-describedby="status">
+        <span class="card-face">
+          <span class="badge"><span id="badgeIcon" aria-hidden="true"></span><span id="badgeName">Fresh basket</span></span>
+          <span>
+            <span class="lead" id="lead">Never have I ever…</span>
+            <span class="prompt" id="prompt">Tap the card to pull your first confession from the basket.</span>
+          </span>
+          <span class="hint" id="hint">Tap to draw</span>
+        </span>
+      </button>
+      <div class="draw-row">
+        <button class="btn" id="draw" type="button">Draw a card</button>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="decksH">
+      <h2 id="decksH">Pick your decks</h2>
+      <p class="note">Mix and match. At least one stays in the basket.</p>
+      <div class="chips" id="chips"></div>
+    </section>
+
+    <section class="block" aria-labelledby="podH">
+      <h2 id="podH">Peas in the pod</h2>
+      <p class="note">Everyone starts with five peas. If a card is true for you, tap a pea to eat it. Tap again to grow it back.</p>
+      <div class="add-row">
+        <input id="nameInput" type="text" maxlength="18" placeholder="Player name" aria-label="Player name" autocomplete="off">
+        <button class="btn-small" id="addBtn" type="button">Add</button>
+      </div>
+      <ul class="players" id="players"></ul>
+      <p class="banner" id="banner" hidden></p>
+      <div class="tools" id="tools" hidden>
+        <button class="btn-ghost" id="resetPeas" type="button">Replant all peas</button>
+      </div>
+    </section>
+
+    <details class="about">
+      <summary>About the book</summary>
+      <div class="body">
+        <p><strong>Pounded by Produce: A Veggie Love Tale</strong> is a comedic romance novella by G. M. Fairy, the author of the Get In My Swamp series.</p>
+        <p>Emily is running from a rough past and lands a kitchen job at a quiet countryside parish. Her new neighbors are Robert and Laurent, best friends who became priests. After a night under the harvest moon, they wake up as a tomato and a cucumber, and keep switching between human and vegetable form.</p>
+        <p>Emily, the priests, and a whole lot of temptation end up tangled together, with vows on the line. These cards borrow the themes, and nothing beyond the back-cover blurb.</p>
+      </div>
+    </details>
+  </main>
+
+  <footer>A fan-made party game for adults. Cheeky, never explicit. Not affiliated with G. M. Fairy or the publisher.</footer>
+
+  <dialog class="guide" id="guide" aria-labelledby="guideH">
+    <h2 id="guideH">How to play</h2>
+    <p class="lede">Four quick steps, then pass the phone around.</p>
+    <ol class="steps">
+      <li>
+        <span class="step-n s1" aria-hidden="true">1</span>
+        <span class="step-t"><strong>Add your players</strong><span>Scroll down to “Peas in the pod” and type each name. Everyone starts with five peas. Prefer fingers? Skip this.</span></span>
+      </li>
+      <li>
+        <span class="step-n s2" aria-hidden="true">2</span>
+        <span class="step-t"><strong>Choose your decks</strong><span>Leave all four on for the full mix, or switch off any you don’t want.</span></span>
+      </li>
+      <li>
+        <span class="step-n s3" aria-hidden="true">3</span>
+        <span class="step-t"><strong>Draw a card</strong><span>Tap the big card and read it out loud to the group.</span></span>
+      </li>
+      <li>
+        <span class="step-n s4" aria-hidden="true">4</span>
+        <span class="step-t"><strong>Own up</strong><span>If it’s true for you, tap one of your peas to eat it. The last player with peas wins. Harvest moon cards add a twist.</span></span>
+      </li>
+    </ol>
+    <button class="btn" id="guideOk" type="button">Got it, let’s play</button>
+  </dialog>
+</div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

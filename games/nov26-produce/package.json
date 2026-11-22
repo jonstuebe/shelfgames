@@ -1,0 +1,28 @@
+{
+  "name": "@shelfgames/nov26-produce",
+  "private": true,
+  "type": "module",
+  "shelfgames": {
+    "subdomain": "nov26-produce",
+    "month": "2026-11",
+    "book": "Pounded by Produce",
+    "author": "G. M. Fairy",
+    "isbn": "9798991447034",
+    "cover": "/covers/nov26-produce.jpg",
+    "game": "Never Have I Ever: Produce Edition"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "deploy": "cf deploy",
+    "og": "bun scripts/og.js"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.v.6",
+    "cf": "^1.0.0-beta.24",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}
